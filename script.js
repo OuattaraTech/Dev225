@@ -122,61 +122,53 @@ function initMobileMenu() {
 // VALIDATION DU FORMULAIRE DE CONTACT
 // ========================================
 
+// ========================================
+// GESTION DU FORMULAIRE DE CONTACT
+// ========================================
+
 function initContactForm() {
     const form = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
+    const successMessage = document.getElementById('success-message');
     
-    if (!form) return;
+    if (!form || !successMessage) return;
     
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+    // Vérifier si on revient après un envoi réussi
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') === 'true') {
+        // Masquer le formulaire et afficher le message de succès
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
         
-        // Récupérer les valeurs des champs
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
+        // Scroll vers le message de succès
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        // Réinitialiser les messages d'erreur
-        clearErrors();
+        // Nettoyer l'URL après 2 secondes
+        setTimeout(() => {
+            window.history.replaceState({}, document.title, window.location.pathname + '#contact');
+        }, 2000);
         
-        // Validation
-        let isValid = true;
-        
-        if (name.length < 2) {
-            showError('name', 'Le nom doit contenir au moins 2 caractères');
-            isValid = false;
-        }
-        
-        if (!isValidEmail(email)) {
-            showError('email', 'Veuillez entrer une adresse email valide');
-            isValid = false;
-        }
-        
-        if (message.length < 10) {
-            showError('message', 'Le message doit contenir au moins 10 caractères');
-            isValid = false;
-        }
-        
-        // Si validation OK
-        if (isValid) {
-            // Simulation d'envoi (à remplacer par votre logique backend)
-            formStatus.textContent = 'Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.';
-            formStatus.className = 'form-status success';
-            
-            // Réinitialiser le formulaire
+        // Optionnel : Réafficher le formulaire après 10 secondes
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+            form.style.display = 'block';
             form.reset();
-            
-            // Masquer le message après 5 secondes
-            setTimeout(() => {
-                formStatus.style.display = 'none';
-            }, 5000);
-        } else {
-            formStatus.textContent = 'Veuillez corriger les erreurs ci-dessus';
-            formStatus.className = 'form-status error';
-        }
-    });
+        }, 10000);
+    }
 }
-
+// ========================================
+// renvoi du formulaire
+// ========================================
+function resetForm() {
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+    
+    successMessage.style.display = 'none';
+    form.style.display = 'block';
+    form.reset();
+    
+    // Nettoyer l'URL
+    window.history.replaceState({}, document.title, window.location.pathname + '#contact');
+}
 // ========================================
 // FONCTIONS UTILITAIRES DE VALIDATION
 // ========================================
@@ -260,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMobileMenu();
     
     // Initialiser le formulaire de contact
-    initContactForm();
+   // initContactForm();
     
     // Définir l'année courante
     setCurrentYear();
