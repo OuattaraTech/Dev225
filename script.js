@@ -126,14 +126,14 @@ const blogPosts = [
         date: "15 Déc 2024",
         link: "articles/react-vs-juejs.html"
     },
-    /*
+    
     {
         title: "L'IA dans le développement web : opportunités et défis",
         category: "Intelligence Artificielle",
         excerpt: "Comment l'intelligence artificielle transforme la façon dont nous créons et maintenons les applications web modernes.",
         image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
         date: "10 Déc 2024",
-        link: "#"
+        link: "articles/L'IA-dans-le-dev-web.html"
     },
     /*
     {
