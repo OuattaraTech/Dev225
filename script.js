@@ -93,6 +93,284 @@ function displayProjects() {
 }
 
 // ========================================
+// DONNÉES DES ARTICLES DE BLOG
+// ========================================
+// ========================================
+// DONNÉES DES ARTICLES DE BLOG
+// ========================================
+
+const blogPosts = [
+    {
+        title: "Les tendances du développement web en 2025",
+        category: "Développement Web",
+        excerpt: "Découvrez les technologies et frameworks qui domineront le développement web cette année : IA, WebAssembly, et plus encore.",
+        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
+        date: "26 Déc 2024",
+        link: "articles/tendance-du-dev-web.html"
+    },
+    /*
+    {
+        title: "Comment automatiser vos processus métier",
+        category: "Automatisation",
+        excerpt: "Guide complet pour identifier et automatiser les tâches répétitives dans votre entreprise et gagner en productivité.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+        date: "20 Déc 2024",
+        link: "#"
+    },
+    */
+    {
+        title: "React vs Vue.js : Quel framework choisir en 2025 ?",
+        category: "Développement",
+        excerpt: "Comparaison détaillée des deux frameworks JavaScript les plus populaires pour vous aider à faire le bon choix.",
+        image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&h=600&fit=crop",
+        date: "15 Déc 2024",
+        link: "articles/react-vs-juejs.html"
+    },
+    /*
+    {
+        title: "L'IA dans le développement web : opportunités et défis",
+        category: "Intelligence Artificielle",
+        excerpt: "Comment l'intelligence artificielle transforme la façon dont nous créons et maintenons les applications web modernes.",
+        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
+        date: "10 Déc 2024",
+        link: "#"
+    },
+    /*
+    {
+        title: "Optimiser la performance de votre site web",
+        category: "Performance",
+        excerpt: "Techniques avancées pour améliorer la vitesse de chargement et l'expérience utilisateur de vos applications web.",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+        date: "5 Déc 2024",
+        link: "#"
+    },
+    */
+    /*
+    {
+        title: "Sécurité web : les meilleures pratiques 2025",
+        category: "Sécurité",
+        excerpt: "Protégez vos applications contre les menaces modernes avec ces techniques de sécurité éprouvées.",
+        image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=600&fit=crop",
+        date: "1 Déc 2024",
+        link: "#"
+    }
+    */
+];
+// ========================================
+// NAVIGATION ACTIVE
+// ========================================
+
+function initActiveNavigation() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            if (window.pageYOffset >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+}
+
+// Dans l'initialisation, ajoutez :
+document.addEventListener('DOMContentLoaded', function() {
+    displayProjects();
+    displayBlogPosts();
+    initMobileMenu();
+    setCurrentYear();
+    initSmoothScroll();
+    initActiveNavigation(); // <- AJOUTEZ CETTE LIGNE
+});
+// ========================================
+// CARROUSEL BLOG AUTOMATIQUE
+// ========================================
+
+let currentSlide = 0;
+let carouselInterval;
+let isDragging = false;
+
+function displayBlogPosts() {
+    const container = document.getElementById('blog-container');
+    const dotsContainer = document.getElementById('carousel-dots');
+    
+    if (!container) return;
+    
+    // Vider les conteneurs
+    container.innerHTML = '';
+    if (dotsContainer) dotsContainer.innerHTML = '';
+    
+    // Créer les cartes de blog
+    blogPosts.forEach((post, index) => {
+        const blogCard = document.createElement('article');
+        blogCard.className = 'blog-card';
+        
+        blogCard.innerHTML = `
+            <img src="${post.image}" alt="${post.title}" class="blog-image">
+            <div class="blog-content">
+                <span class="blog-category">${post.category}</span>
+                <h3 class="blog-title">${post.title}</h3>
+                <p class="blog-excerpt">${post.excerpt}</p>
+                <div class="blog-meta">
+                    <span>${post.date}</span>
+                    <a href="${post.link}" class="blog-link">Lire la suite →</a>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(blogCard);
+        
+        // Créer les points indicateurs
+        if (dotsContainer) {
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        }
+    });
+    
+    // Initialiser le carrousel
+    initCarousel();
+}
+
+function initCarousel() {
+    const container = document.getElementById('blog-container');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    
+    if (!container) return;
+    
+    // Démarrer le défilement automatique
+    startAutoplay();
+    
+    // Arrêter au survol
+    container.addEventListener('mouseenter', stopAutoplay);
+    container.addEventListener('mouseleave', startAutoplay);
+    
+    // Navigation par boutons
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            stopAutoplay();
+            previousSlide();
+            startAutoplay();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            stopAutoplay();
+            nextSlide();
+            startAutoplay();
+        });
+    }
+    
+    // Navigation tactile (swipe) pour mobile
+    let startX = 0;
+    let currentX = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        stopAutoplay();
+    });
+    
+    container.addEventListener('touchmove', (e) => {
+        currentX = e.touches[0].clientX;
+    });
+    
+    container.addEventListener('touchend', () => {
+        const diff = startX - currentX;
+        
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                nextSlide();
+            } else {
+                previousSlide();
+            }
+        }
+        
+        startAutoplay();
+    });
+}
+
+function startAutoplay() {
+    stopAutoplay(); // Éviter les doublons
+    carouselInterval = setInterval(() => {
+        nextSlide();
+    }, 3000); // Change toutes les 3 secondes (modifiable)
+}
+
+function stopAutoplay() {
+    if (carouselInterval) {
+        clearInterval(carouselInterval);
+    }
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % blogPosts.length;
+    updateCarousel();
+}
+
+function previousSlide() {
+    currentSlide = (currentSlide - 1 + blogPosts.length) % blogPosts.length;
+    updateCarousel();
+}
+
+function goToSlide(index) {
+    stopAutoplay();
+    currentSlide = index;
+    updateCarousel();
+    startAutoplay();
+}
+
+function updateCarousel() {
+    const container = document.getElementById('blog-container');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    if (!container) return;
+    
+    // Calculer le décalage
+    const cardWidth = 350; // Largeur de la carte + gap
+    const gap = 35;
+    const offset = currentSlide * (cardWidth + gap);
+    
+    // Appliquer la transformation
+    container.style.transform = `translateX(-${offset}px)`;
+    
+    // Mettre à jour les indicateurs
+    dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+// ========================================
+// INITIALISATION AU CHARGEMENT
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    displayProjects();
+    displayBlogPosts(); // Initialise le carrousel automatique
+    initMobileMenu();
+    setCurrentYear();
+    initSmoothScroll();
+});
+// ========================================
 // NAVIGATION MOBILE
 // ========================================
 
@@ -125,34 +403,80 @@ function initMobileMenu() {
 // ========================================
 // GESTION DU FORMULAIRE DE CONTACT
 // ========================================
-
+/*
 function initContactForm() {
     const form = document.getElementById('contact-form');
     const successMessage = document.getElementById('success-message');
     
     if (!form || !successMessage) return;
     
-    // Vérifier si on revient après un envoi réussi
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('success') === 'true') {
-        // Masquer le formulaire et afficher le message de succès
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
         
-        // Scroll vers le message de succès
-        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Récupérer le bouton
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
         
-        // Nettoyer l'URL après 2 secondes
-        setTimeout(() => {
-            window.history.replaceState({}, document.title, window.location.pathname + '#contact');
-        }, 2000);
+        // Désactiver le bouton pendant l'envoi
+        submitBtn.disabled = true;
+        if (btnText) btnText.style.display = 'none';
+        if (btnLoading) btnLoading.style.display = 'inline';
         
-        // Optionnel : Réafficher le formulaire après 10 secondes
-        setTimeout(() => {
-            successMessage.style.display = 'none';
-            form.style.display = 'block';
-            form.reset();
-        }, 10000);
+        // Récupérer les données du formulaire
+        const formData = new FormData(form);
+        
+        try {
+            // Envoyer les données à FormSubmit
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Masquer le formulaire
+                form.style.display = 'none';
+                
+                // Afficher le message de succès
+                successMessage.style.display = 'block';
+                
+                // Scroll vers le message
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Réinitialiser le formulaire
+                form.reset();
+                
+            } else {
+                throw new Error('Erreur lors de l\'envoi');
+            }
+            
+        } catch (error) {
+            alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+            console.error('Erreur:', error);
+        } finally {
+            // Réactiver le bouton
+            submitBtn.disabled = false;
+            if (btnText) btnText.style.display = 'inline';
+            if (btnLoading) btnLoading.style.display = 'none';
+        }
+    });
+}
+*/
+// Fonction pour réafficher le formulaire
+function resetForm() {
+    const form = document.getElementById('contact-form');
+    const successMessage = document.getElementById('success-message');
+    
+    if (form && successMessage) {
+        successMessage.style.display = 'none';
+        form.style.display = 'block';
+        form.reset();
+        
+        // Scroll vers le formulaire
+        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
 // ========================================
