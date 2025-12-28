@@ -999,6 +999,10 @@ body {
    SECTION BLOG - CARROUSEL AUTOMATIQUE
    ======================================== */
 
+/* ========================================
+   SECTION BLOG - CARROUSEL AVEC SNAP
+   ======================================== */
+
 .blog {
     padding: 100px 0;
     background-color: var(--bg-light);
@@ -1007,16 +1011,27 @@ body {
 
 .blog-carousel-wrapper {
     position: relative;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     margin: 0 auto;
     max-width: 100%;
+    /* Scroll snap pour centrage automatique */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Cacher la scrollbar mais garder la fonctionnalité */
+.blog-carousel-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .blog-grid {
     display: flex;
     gap: 35px;
     transition: transform 0.8s ease-in-out;
-    padding: 10px 0;
+    padding: 10px 20px; /* Padding pour que les cartes ne touchent pas les bords */
 }
 
 .blog-card {
@@ -1028,6 +1043,8 @@ body {
     overflow: hidden;
     box-shadow: var(--shadow-md);
     transition: var(--transition);
+    /* Snap au centre lors du scroll */
+    scroll-snap-align: center;
 }
 
 .blog-card:hover {
@@ -1093,7 +1110,7 @@ body {
     color: var(--primary-dark);
 }
 
-/* Indicateurs de pagination (optionnel) */
+/* Indicateurs de pagination */
 .carousel-dots {
     display: flex;
     justify-content: center;
@@ -1116,7 +1133,7 @@ body {
     border-radius: 6px;
 }
 
-/* Flèches de navigation (optionnel) */
+/* Boutons de navigation */
 .carousel-controls {
     display: flex;
     justify-content: center;
@@ -1150,33 +1167,36 @@ body {
     transform: scale(1);
 }
 
-/* Animation de fade pour les transitions */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateX(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.blog-card {
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* Responsive */
+/* RESPONSIVE - MOBILE */
 @media (max-width: 768px) {
+    .blog-grid {
+        padding: 10px 10px; /* Réduire le padding sur mobile */
+        gap: 20px; /* Réduire l'espace entre les cartes */
+    }
+    
     .blog-card {
-        min-width: 300px;
-        max-width: 300px;
+        /* Sur mobile, carte prend presque toute la largeur */
+        min-width: calc(100vw - 60px);
+        max-width: calc(100vw - 60px);
+    }
+    
+    /* Centrer la première carte au chargement */
+    .blog-carousel-wrapper {
+        padding: 0 30px; /* Padding pour centrer visuellement */
     }
 }
 
 @media (max-width: 480px) {
     .blog-card {
-        min-width: 280px;
-        max-width: 280px;
+        min-width: calc(100vw - 80px); /* Ajuster pour petits écrans */
+        max-width: calc(100vw - 80px); /* Ajuster pour petits écrans */ 
+    }
+    
+    .blog-carousel-wrapper {
+        padding: 0 20px;
+    }
+    
+    .blog-grid {
+        gap: 15px;
     }
 }

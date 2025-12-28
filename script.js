@@ -105,7 +105,7 @@ const blogPosts = [
         category: "Développement Web",
         excerpt: "Découvrez les technologies et frameworks qui domineront le développement web cette année : IA, WebAssembly, et plus encore.",
         image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
-        date: "26 Déc 2024",
+        date: "10 Déc 2025",
         link: "articles/tendance-du-dev-web.html"
     },
     /*
@@ -123,7 +123,7 @@ const blogPosts = [
         category: "Développement",
         excerpt: "Comparaison détaillée des deux frameworks JavaScript les plus populaires pour vous aider à faire le bon choix.",
         image: "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&h=600&fit=crop",
-        date: "15 Déc 2024",
+        date: "15 Janv 2025",
         link: "articles/react-vs-juejs.html"
     },
     
@@ -135,16 +135,16 @@ const blogPosts = [
         date: "10 Déc 2024",
         link: "articles/L'IA-dans-le-dev-web.html"
     },
-    /*
+    
     {
-        title: "Optimiser la performance de votre site web",
-        category: "Performance",
-        excerpt: "Techniques avancées pour améliorer la vitesse de chargement et l'expérience utilisateur de vos applications web.",
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-        date: "5 Déc 2024",
-        link: "#"
+        title: "Les meilleurs frameworks Python pour l'analyse de données en 2025",
+        category: "Analyse de donnéés",
+        excerpt: "Guide complet des bibliothèques Python incontournables pour l'analyse de données : Pandas, NumPy, Matplotlib, Plotly, Scikit-learn et plus encore. Comparaison, exemples pratiques et recommandations.",
+        image: "https://images.unsplash.com/photo-1649180556628-9ba704115795?q=80&w=862&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=800&h=600&fit=crop",
+        date: "5 Déc 2025",
+        link: "articles/analyse-de-donnee-avec-python.html"
     },
-    */
+    
     /*
     {
         title: "Sécurité web : les meilleures pratiques 2025",
@@ -198,9 +198,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // CARROUSEL BLOG AUTOMATIQUE
 // ========================================
 
+// ========================================
+// CARROUSEL BLOG AVEC SNAP AUTOMATIQUE
+// ========================================
+
 let currentSlide = 0;
 let carouselInterval;
-let isDragging = false;
 
 function displayBlogPosts() {
     const container = document.getElementById('blog-container');
@@ -216,6 +219,7 @@ function displayBlogPosts() {
     blogPosts.forEach((post, index) => {
         const blogCard = document.createElement('article');
         blogCard.className = 'blog-card';
+        blogCard.setAttribute('data-index', index);
         
         blogCard.innerHTML = `
             <img src="${post.image}" alt="${post.title}" class="blog-image">
@@ -237,7 +241,7 @@ function displayBlogPosts() {
             const dot = document.createElement('span');
             dot.className = 'carousel-dot';
             if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(index));
+            dot.addEventListener('click', () => scrollToCard(index));
             dotsContainer.appendChild(dot);
         }
     });
@@ -247,18 +251,19 @@ function displayBlogPosts() {
 }
 
 function initCarousel() {
+    const wrapper = document.querySelector('.blog-carousel-wrapper');
     const container = document.getElementById('blog-container');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     
-    if (!container) return;
+    if (!wrapper || !container) return;
     
     // Démarrer le défilement automatique
     startAutoplay();
     
     // Arrêter au survol
-    container.addEventListener('mouseenter', stopAutoplay);
-    container.addEventListener('mouseleave', startAutoplay);
+    wrapper.addEventListener('mouseenter', stopAutoplay);
+    wrapper.addEventListener('mouseleave', startAutoplay);
     
     // Navigation par boutons
     if (prevBtn) {
@@ -277,39 +282,87 @@ function initCarousel() {
         });
     }
     
-    // Navigation tactile (swipe) pour mobile
-    let startX = 0;
-    let currentX = 0;
+    // Détection du scroll pour mettre à jour les dots
+    let scrollTimeout;
+    wrapper.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            updateDotsFromScroll();
+        }, 100);
+    });
     
-    container.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
+    // Navigation tactile améliorée (swipe)
+    let startX = 0;
+    let scrollLeft = 0;
+    
+    wrapper.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX;
+        scrollLeft = wrapper.scrollLeft;
         stopAutoplay();
     });
     
-    container.addEventListener('touchmove', (e) => {
-        currentX = e.touches[0].clientX;
-    });
-    
-    container.addEventListener('touchend', () => {
-        const diff = startX - currentX;
-        
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) {
-                nextSlide();
-            } else {
-                previousSlide();
-            }
-        }
-        
+    wrapper.addEventListener('touchend', () => {
         startAutoplay();
     });
+}
+
+function scrollToCard(index) {
+    const wrapper = document.querySelector('.blog-carousel-wrapper');
+    const cards = document.querySelectorAll('.blog-card');
+    
+    if (!wrapper || !cards[index]) return;
+    
+    // Calculer la position de la carte
+    const card = cards[index];
+    const cardWidth = card.offsetWidth;
+    const gap = 35; // Gap entre les cartes (doit correspondre au CSS)
+    const wrapperWidth = wrapper.offsetWidth;
+    
+    // Centrer la carte dans le wrapper
+    const scrollPosition = (cardWidth + gap) * index - (wrapperWidth / 2) + (cardWidth / 2);
+    
+    wrapper.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+    });
+    
+    currentSlide = index;
+    updateDots();
+}
+
+function updateDotsFromScroll() {
+    const wrapper = document.querySelector('.blog-carousel-wrapper');
+    const cards = document.querySelectorAll('.blog-card');
+    
+    if (!wrapper || cards.length === 0) return;
+    
+    const scrollPosition = wrapper.scrollLeft;
+    const cardWidth = cards[0].offsetWidth + 35; // largeur + gap
+    
+    // Déterminer quelle carte est la plus proche du centre
+    const centerPosition = scrollPosition + wrapper.offsetWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+    
+    cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(centerPosition - cardCenter);
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+        }
+    });
+    
+    currentSlide = closestIndex;
+    updateDots();
 }
 
 function startAutoplay() {
     stopAutoplay(); // Éviter les doublons
     carouselInterval = setInterval(() => {
         nextSlide();
-    }, 3000); // Change toutes les 3 secondes (modifiable)
+    }, 4000); // Change toutes les 4 secondes
 }
 
 function stopAutoplay() {
@@ -320,36 +373,17 @@ function stopAutoplay() {
 
 function nextSlide() {
     currentSlide = (currentSlide + 1) % blogPosts.length;
-    updateCarousel();
+    scrollToCard(currentSlide);
 }
 
 function previousSlide() {
     currentSlide = (currentSlide - 1 + blogPosts.length) % blogPosts.length;
-    updateCarousel();
+    scrollToCard(currentSlide);
 }
 
-function goToSlide(index) {
-    stopAutoplay();
-    currentSlide = index;
-    updateCarousel();
-    startAutoplay();
-}
-
-function updateCarousel() {
-    const container = document.getElementById('blog-container');
+function updateDots() {
     const dots = document.querySelectorAll('.carousel-dot');
     
-    if (!container) return;
-    
-    // Calculer le décalage
-    const cardWidth = 350; // Largeur de la carte + gap
-    const gap = 35;
-    const offset = currentSlide * (cardWidth + gap);
-    
-    // Appliquer la transformation
-    container.style.transform = `translateX(-${offset}px)`;
-    
-    // Mettre à jour les indicateurs
     dots.forEach((dot, index) => {
         if (index === currentSlide) {
             dot.classList.add('active');
@@ -358,18 +392,6 @@ function updateCarousel() {
         }
     });
 }
-
-// ========================================
-// INITIALISATION AU CHARGEMENT
-// ========================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    displayProjects();
-    displayBlogPosts(); // Initialise le carrousel automatique
-    initMobileMenu();
-    setCurrentYear();
-    initSmoothScroll();
-});
 // ========================================
 // NAVIGATION MOBILE
 // ========================================

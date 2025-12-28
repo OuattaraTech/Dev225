@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les meilleurs frameworks Python pour l'analyse de données en 2025 - Dev225 Blog</title>
+    <meta name="description" content="Guide complet des bibliothèques Python incontournables pour l'analyse de données : Pandas, NumPy, Matplotlib, Plotly, Scikit-learn et plus encore. Comparaison, exemples pratiques et recommandations.">
+    <meta name="keywords" content="python data analysis, pandas, numpy, matplotlib, scikit-learn, data science, dev225, analyse de données">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .article-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 100px 0 60px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .article-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="1" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .article-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 1rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        
+        .article-content {
+            max-width: 850px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        
+        .article-content h2 {
+            font-size: 2.2rem;
+            margin: 50px 0 25px;
+            color: #1e293b;
+            font-weight: 700;
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+        }
+        
+        .article-content h3 {
+            font-size: 1.6rem;
+            margin: 35px 0 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .article-content p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #475569;
+            margin-bottom: 25px;
+        }
+        
+        .article-content strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+        
+        .article-content ul, .article-content ol {
+            margin: 25px 0;
+            padding-left: 30px;
+        }
+        
+        .article-content li {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #475569;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-left: 4px solid #667eea;
+            padding: 25px 30px;
+            margin: 35px 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box p {
+            margin: 0;
+            font-size: 1.15rem;
+            color: #1e293b;
+        }
+        
+        .library-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .library-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .library-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .library-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .library-logo {
+            font-size: 3rem;
+        }
+        
+        .library-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .library-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-difficulty {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-popularity {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-performance {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .library-description {
+            color: #475569;
+            margin: 15px 0;
+            line-height: 1.7;
+        }
+        
+        .library-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+        
+        .feature-item::before {
+            content: '✓';
+            color: #10b981;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .library-stats {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .code-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-header {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .code-header::before {
+            content: '💻';
+        }
+        
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .keyword {
+            color: #c678dd;
+        }
+        
+        .string {
+            color: #98c379;
+        }
+        
+        .function {
+            color: #61afef;
+        }
+        
+        .number {
+            color: #d19a66;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            margin: 35px 0;
+            border-collapse: collapse;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+        
+        .comparison-table tr:hover td {
+            background: #f8fafc;
+        }
+        
+        .rating {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .star-filled {
+            color: #fbbf24;
+        }
+        
+        .star-empty {
+            color: #e2e8f0;
+        }
+        
+        .workflow-diagram {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 35px 0;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .workflow-step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .step-description {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+        
+        .step-library {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 35px 0;
+        }
+        
+        .use-case-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .use-case-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .use-case-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .use-case-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        
+        .use-case-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .use-case-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tool-tag {
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin: 40px 0 20px;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .cta-box h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .cta-box p {
+            color: white;
+            opacity: 0.95;
+            margin-bottom: 25px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 14px 35px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+            
+            .article-content h2 {
+                font-size: 1.7rem;
+            }
+            
+            .article-content h3 {
+                font-size: 1.4rem;
+            }
+            
+            .article-image {
+                height: 250px;
+            }
+            
+            .library-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .workflow-step {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <a href="../index.html" style="text-decoration: none;">
+                        <img src="../img/logo sans fond.png" alt="Dev225 Logo" class="logo-image">
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html#accueil">Accueil</a></li>
+                    <li><a href="../index.html#services">Services</a></li>
+                    <li><a href="../index.html#projets">Projets</a></li>
+                    <li><a href="../index.html#blog">Blog</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button class="menu-toggle" aria-label="Menu de navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER DE L'ARTICLE -->
+    <header class="article-header">
+        <div class="container">
+            <h1 class="article-title">Les Meilleurs Frameworks Python pour l'Analyse de Données en 2025</h1>
+            <div class="article-meta">
+                <span>📅 5 Décembre 2024</span>
+                <span>📁 Data Science</span>
+                <span>👤 Par l'équipe Dev225</span>
+                <span>⏱️ 16 min de lecture</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENU DE L'ARTICLE -->
+    <article class="article-content">
+        <a href="../index.html#blog" class="back-button">← Retour au blog</a>
+        
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop" 
+             alt="Analyse de données avec Python" 
+             class="article-image">
+        
+        <h2>Introduction : Python, le langage roi de la Data Science</h2>
+        <p>
+            En 2025, <strong>Python</strong> reste incontestablement le langage de programmation le plus 
+            utilisé pour l'analyse de données et la science des données. Avec un écosystème riche de 
+            bibliothèques puissantes et une syntaxe accessible, Python permet de transformer des données 
+            brutes en insights actionnables.
+        </p>
+
+        <p>
+            Chez <strong>Dev225</strong>, nous utilisons quotidiennement ces outils pour analyser les données 
+            de nos clients en Côte d'Ivoire : prédictions de ventes, analyse de comportement utilisateur, 
+            optimisation de processus métier, et bien plus encore. Ce guide vous présente les bibliothèques 
+            essentielles et comment les utiliser efficacement.
+        </p>
+
+        <div class="highlight-box">
+            <p>
+                <strong>📊 Pourquoi Python pour l'analyse de données ?</strong>
+            </p>
+            <ul>
+                <li>Syntaxe simple et lisible</li>
+                <li>Écosystème complet de bibliothèques spécialisées</li>
+                <li>Communauté massive et active</li>
+                <li>Intégration facile avec les outils Big Data</li>
+                <li>Gratuit et open-source</li>
+                <li>Performances excellentes pour la plupart des cas d'usage</li>
+            </ul>
+        </div>
+
+        <h2>Les bibliothèques fondamentales : Le trio de base</h2>
+
+        <h3>1. 🐼 Pandas : La pierre angulaire de l'analyse de données</h3>
+
+        <div class="library-card">
+            <div class="library-header">
+                <div class="library-title">
+                    <div class="library-logo">🐼</div>
+                    <h4 class="library-name">Pandas</h4>
+                </div>
+                <div class="library-badges">
+                    <span class="badge badge-difficulty">Facile à Moyen</span>
+                    <span class="badge badge-popularity">★★★★★ Très populaire</span>
+                    <span class="badge badge-performance">Performance : Bonne</span>
+                </div>
+            </div>
+            
+            <p class="library-description">
+                <strong>Pandas</strong> est LA bibliothèque incontournable pour manipuler et analyser des données 
+                structurées. Elle fournit des structures de données puissantes (DataFrame, Series) et des outils 
+                pour nettoyer, transformer et analyser des ensembles de données de toutes tailles.
+            </p>
+            
+            <div class="library-features">
+                <div class="feature-item">Manipulation de DataFrames</div>
+                <div class="feature-item">Import/Export (CSV, Excel, SQL)</div>
+                <div class="feature-item">Nettoyage de données</div>
+                <div class="feature-item">Agrégation et GroupBy</div>
+                <div class="feature-item">Séries temporelles</div>
+                <div class="feature-item">Fusion de datasets</div>
+            </div>
+            
+            <div class="library-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Version</div>
+                    <div class="stat-value">2.2+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Stars GitHub</div>
+                    <div class="stat-value">42k+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Downloads/mois</div>
+                    <div class="stat-value">50M+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Difficulté</div>
+                    <div class="stat-value">★★☆☆☆</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <div class="code-header">Exemple : Analyse rapide d'un dataset de ventes</div>
+            <pre><code><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+
+<span class="comment"># Charger des données CSV</span>
+df = pd.<span class="function">read_csv</span>(<span class="string">'ventes_2024.csv'</span>)
+
+<span class="comment"># Aperçu rapide des données</span>
+<span class="keyword">print</span>(df.<span class="function">head</span>())
+<span class="keyword">print</span>(df.<span class="function">info</span>())
+<span class="keyword">print</span>(df.<span class="function">describe</span>())
+
+<span class="comment"># Nettoyage : supprimer les lignes avec valeurs manquantes</span>
+df_clean = df.<span class="function">dropna</span>()
+
+<span class="comment"># Filtrer les ventes supérieures à 1 000 000 FCFA</span>
+ventes_importantes = df[df[<span class="string">'montant'</span>] > <span class="number">1000000</span>]
+
+<span class="comment"># Agréger par catégorie de produit</span>
+par_categorie = df.<span class="function">groupby</span>(<span class="string">'categorie'</span>)[<span class="string">'montant'</span>].<span class="function">sum</span>().<span class="function">sort_values</span>(ascending=<span class="keyword">False</span>)
+
+<span class="comment"># Top 10 clients</span>
+top_clients = df.<span class="function">groupby</span>(<span class="string">'client_id'</span>)[<span class="string">'montant'</span>].<span class="function">sum</span>().<span class="function">nlargest</span>(<span class="number">10</span>)
+
+<span class="comment"># Exporter vers Excel</span>
+df_clean.<span class="function">to_excel</span>(<span class="string">'ventes_nettoyees.xlsx'</span>, index=<span class="keyword">False</span>)</code></pre>
+        </div>
+
+        <h3>2. 🔢 NumPy : Le moteur de calcul numérique</h3>
+
+        <div class="library-card">
+            <div class="library-header">
+                <div class="library-title">
+                    <div class="library-logo">🔢</div>
+                    <h4 class="library-name">NumPy</h4>
+                </div>
+                <div class="library-badges">
+                    <span class="badge badge-difficulty">Moyen</span>
+                    <span class="badge badge-popularity">★★★★★ Essentiel</span>
+                    <span class="badge badge-performance">Performance : Excellente</span>
+                </div>
+            </div>
+            
+            <p class="library-description">
+                <strong>NumPy</strong> est la base de tout le calcul scientifique en Python. Elle fournit des 
+                tableaux multidimensionnels (arrays) ultra-rapides et des fonctions mathématiques optimisées. 
+                C'est le fondement sur lequel reposent Pandas, Matplotlib et la plupart des bibliothèques de ML.
+            </p>
+            
+            <div class="library-features">
+                <div class="feature-item">Arrays multidimensionnels</div>
+                <div class="feature-item">Opérations vectorisées</div>
+                <div class="feature-item">Algèbre linéaire</div>
+                <div class="feature-item">Statistiques</div>
+                <div class="feature-item">Génération de nombres aléatoires</div>
+                <div class="feature-item">Broadcasting</div>
+            </div>
+            
+            <div class="library-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Version</div>
+                    <div class="stat-value">1.26+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Stars GitHub</div>
+                    <div class="stat-value">26k+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Downloads/mois</div>
+                    <div class="stat-value">180M+</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Vitesse</div>
+                    <div class="stat-value">50-100x Python pur</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <div class="code-header">Exemple : Calculs statistiques sur des données de température</div>
+            <pre><code><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+<span class="comment"># Créer un array de températures mensuelles (en °C)</span>
+temperatures = np.<span class="function">array</span>([<span class="number">28, 30, 32, 31, 29, 27, 26, 27, 28, 30, 31, 29</span>])
+
+<span class="comment"># Statistiques de base</span>
+moyenne = np.<span class="function">mean</span>(temperatures)
+mediane = np.<span class="function">median</span>(temperatures)
+ecart_type = np.<span class="function">std</span>(temperatures)
+temp_min = np.<span class="function">min</span>(temperatures)
+temp_max = np.<span class="function">max</span>(temperatures)
+
+<span class="keyword">print</span>(<span class="string">f"Température moyenne : {moyenne:.2f}°C"</span>)
+<span class="keyword">print</span>(<span class="string">f"Écart-type : {ecart_type:.2f}"</span>)
+
+<span class="comment"># Opérations vectorisées (très rapide !)</span>
+temperatures_fahrenheit = temperatures * <span class="number">9/5</span> + <span class="number">32</span>
+
+<span class="comment"># Filtrage conditionnel</span>
+mois_chauds = temperatures[temperatures > <span class="number">30</span>]
+
+<span class="comment"># Matrice de corrélation entre variables</span>
+data = np.<span class="function">random</span>.<span class="function">rand</span>(<span class="number">100, 5</span>)  <span class="comment"># 100 observations, 5 variables</span>
+correlation_matrix = np.<span class="function">corrcoef</span>(data, rowvar=<span class="keyword">False</span>)</code></pre>
+        </div>
+
+        <h3>3. 📊 Matplotlib & Seaborn : La visualisation des données</h3>
+
+        <div class="library-card">
+            <div class="library-header">
+                <div class="library-title">
+                    <div class="library-logo">📊</div>
+                    <h4 class="library-name">Matplotlib & Seaborn</h4>
+                </div>
+                <div class="library-badges">
+                    <span class="badge badge-difficulty">Facile à Moyen</span>
+                    <span class="badge badge-popularity">★★★★★ Standard</span>
+                </div>
+            </div>
+            
+            <p class="library-description">
+                <strong>Matplotlib</strong> est la bibliothèque de visualisation la plus utilisée en Python. 
+                <strong>Seaborn</strong> est construite sur Matplotlib et offre des graphiques statistiques 
+                plus élégants avec moins de code. Ensemble, elles couvrent 95% des besoins en visualisation.
+            </p>
+            
+            <div class="library-features">
+                <div class="feature-item">Graphiques en barres, lignes, scatter</div>
+                <div class="feature-item">Heatmaps et matrices</div>
+                <div class="feature-item">Histogrammes et distributions</div>
+                <div class="feature-item">Boxplots et violinplots</div>
+                <div class="feature-item">Personnalisation complète</div>
+                <div class="feature-item">Export haute qualité</div>
+            </div>
+        </div>
+
+        <div class="code-example">
+            <div class="code-header">Exemple : Visualisations avancées de ventes</div>
+            <pre><code><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> seaborn <span class="keyword">as</span> sns
+<span class="comment"># Configurer le style</span>
+sns.<span class="function">set_style</span>(<span class="string">"whitegrid"</span>)
+plt.<span class="function">figure</span>(figsize=(<span class="number">12, 6</span>))
+<span class="comment"># Graphique 1 : Évolution des ventes mensuelles</span>
+plt.<span class="function">subplot</span>(<span class="number">2, 2, 1</span>)
+df.<span class="function">groupby</span>(<span class="string">'mois'</span>)[<span class="string">'montant'</span>].<span class="function">sum</span>().<span class="function">plot</span>(kind=<span class="string">'line'</span>, marker=<span class="string">'o'</span>)
+plt.<span class="function">title</span>(<span class="string">"Évolution des ventes"</span>)
+plt.<span class="function">xlabel</span>(<span class="string">"Mois"</span>)
+plt.<span class="function">ylabel</span>(<span class="string">"Montant (FCFA)"</span>)
+<span class="comment"># Graphique 2 : Top 5 produits</span>
+plt.<span class="function">subplot</span>(<span class="number">2, 2, 2</span>)
+top_produits = df.<span class="function">groupby</span>(<span class="string">'produit'</span>)[<span class="string">'quantite'</span>].<span class="function">sum</span>().<span class="function">nlargest</span>(<span class="number">5</span>)
+top_produits.<span class="function">plot</span>(kind=<span class="string">'barh'</span>, color=<span class="string">'skyblue'</span>)
+plt.<span class="function">title</span>(<span class="string">"Top 5 Produits"</span>)
+<span class="comment"># Graphique 3 : Distribution des montants (Seaborn)</span>
+plt.<span class="function">subplot</span>(<span class="number">2, 2, 3</span>)
+sns.<span class="function">histplot</span>(df[<span class="string">'montant'</span>], kde=<span class="keyword">True</span>, bins=<span class="number">30</span>)
+plt.<span class="function">title</span>(<span class="string">"Distribution des montants"</span>)
+<span class="comment"># Graphique 4 : Heatmap corrélation</span>
+plt.<span class="function">subplot</span>(<span class="number">2, 2, 4</span>)
+correlation = df[[<span class="string">'montant'</span>, <span class="string">'quantite'</span>, <span class="string">'prix_unitaire'</span>]].<span class="function">corr</span>()
+sns.<span class="function">heatmap</span>(correlation, annot=<span class="keyword">True</span>, cmap=<span class="string">'coolwarm'</span>)
+plt.<span class="function">tight_layout</span>()
+plt.<span class="function">savefig</span>(<span class="string">'analyse_ventes.png'</span>, dpi=<span class="number">300</span>)
+plt.<span class="function">show</span>()</code></pre>
+</div>
+<h2>Les bibliothèques de visualisation interactive</h2>
+
+    <h3>4. 🎨 Plotly : Graphiques interactifs web-ready</h3>
+
+    <div class="library-card">
+        <div class="library-header">
+            <div class="library-title">
+                <div class="library-logo">🎨</div>
+                <h4 class="library-name">Plotly</h4>
+            </div>
+            <div class="library-badges">
+                <span class="badge badge-difficulty">Facile</span>
+                <span class="badge badge-popularity">★★★★☆ Montante</span>
+            </div>
+        </div>
+        
+        <p class="library-description">
+            <strong>Plotly</strong> génère des graphiques interactifs magnifiques qui fonctionnent dans les 
+            navigateurs web. Parfait pour les dashboards, rapports interactifs et présentations clients.
+        </p>
+        
+        <div class="library-features">
+            <div class="feature-item">Graphiques 100% interactifs</div>
+            <div class="feature-item">Zoom, pan, hover tooltips</div>
+            <div class="feature-item">Export HTML standalone</div>
+            <div class="feature-item">3D et graphiques géographiques</div>
+            <div class="feature-item">Dash pour dashboards</div>
+            <div class="feature-item">Styled par défaut</div>
+        </div>
+    </div>
+
+    <div class="code-example">
+        <div class="code-header">Exemple : Dashboard interactif des ventes</div>
+        <pre><code><span class="keyword">import</span> plotly.express <span class="keyword">as</span> px
+            <span class="keyword">import</span> plotly.graph_objects <span class="keyword">as</span> go
+<span class="comment"># Graphique interactif simple</span>
+fig = px.<span class="function">line</span>(df, x=<span class="string">'date'</span>, y=<span class="string">'montant'</span>,
+title=<span class="string">'Évolution des ventes'</span>,
+labels={<span class="string">'montant'</span>: <span class="string">'Montant (FCFA)'</span>})
+<span class="comment"># Ajouter interactivité</span>
+fig.<span class="function">update_traces</span>(mode=<span class="string">'lines+markers'</span>)
+fig.<span class="function">update_layout</span>(hovermode=<span class="string">'x unified'</span>)
+<span class="comment"># Graphique à barres empilées par catégorie</span>
+fig2 = px.<span class="function">bar</span>(df, x=<span class="string">'mois'</span>, y=<span class="string">'montant'</span>, color=<span class="string">'categorie'</span>,
+title=<span class="string">'Ventes par catégorie'</span>)
+<span class="comment"># Graphique 3D (impressionnant !)</span>
+fig3 = px.<span class="function">scatter_3d</span>(df, x=<span class="string">'prix'</span>, y=<span class="string">'quantite'</span>, z=<span class="string">'montant'</span>,
+color=<span class="string">'categorie'</span>, size=<span class="string">'montant'</span>)
+<span class="comment"># Sauvegarder en HTML (partage facile)</span>
+fig.<span class="function">write_html</span>(<span class="string">'dashboard_ventes.html'</span>)
+<span class="comment"># Afficher dans notebook ou browser</span>
+fig.<span class="function">show</span>()</code></pre>
+</div>
+<h2>Les bibliothèques de Machine Learning</h2>
+
+    <h3>5. 🤖 Scikit-learn : Le ML accessible à tous</h3>
+
+    <div class="library-card">
+        <div class="library-header">
+            <div class="library-title">
+                <div class="library-logo">🤖</div>
+                <h4 class="library-name">Scikit-learn</h4>
+            </div>
+            <div class="library-badges">
+                <span class="badge badge-difficulty">Moyen à Avancé</span>
+                <span class="badge badge-popularity">★★★★★ Référence ML</span>
+            </div>
+        </div>
+        
+        <p class="library-description">
+            <strong>Scikit-learn</strong> est LA bibliothèque de machine learning pour Python. Elle couvre 
+            classification, régression, clustering, réduction de dimensionnalité et plus encore, avec une 
+            API cohérente et une documentation exemplaire.
+        </p>
+        
+        <div class="library-features">
+            <div class="feature-item">Classification (SVM, Random Forest, etc.)</div>
+            <div class="feature-item">Régression linéaire et non-linéaire</div>
+            <div class="feature-item">Clustering (K-means, DBSCAN)</div>
+            <div class="feature-item">Preprocessing et feature engineering</div>
+            <div class="feature-item">Cross-validation</div>
+            <div class="feature-item">Model selection</div>
+        </div>
+    </div>
+
+    <div class="code-example">
+        <div class="code-header">Exemple : Prédiction de churn client</div>
+        <pre><code><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+            <span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, accuracy_score
+<span class="comment"># Préparer les données</span>
+X = df[[<span class="string">'age'</span>, <span class="string">'montant_total'</span>, <span class="string">'nb_achats'</span>, <span class="string">'anciennete'</span>]]
+y = df[<span class="string">'a_churne'</span>]  <span class="comment"># 0 = actif, 1 = churné</span>
+<span class="comment"># Split train/test</span>
+X_train, X_test, y_train, y_test = <span class="function">train_test_split</span>(X, y,
+test_size=<span class="number">0.2</span>,
+random_state=<span class="number">42</span>)
+<span class="comment"># Entraîner le modèle</span>
+model = <span class="function">RandomForestClassifier</span>(n_estimators=<span class="number">100</span>, random_state=<span class="number">42</span>)
+model.<span class="function">fit</span>(X_train, y_train)
+<span class="comment"># Prédictions</span>
+y_pred = model.<span class="function">predict</span>(X_test)
+<span class="comment"># Évaluation</span>
+accuracy = <span class="function">accuracy_score</span>(y_test, y_pred)
+<span class="keyword">print</span>(<span class="string">f"Précision : {accuracy * 100:.2f}%"</span>)
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, y_pred))
+<span class="comment"># Importance des features</span>
+importances = pd.<span class="function">DataFrame</span>({
+<span class="string">'feature'</span>: X.columns,
+<span class="string">'importance'</span>: model.feature_importances_
+}).<span class="function">sort_values</span>(<span class="string">'importance'</span>, ascending=<span class="keyword">False</span>)</code></pre>
+</div>
+
+<h2>Bibliothèques spécialisées avancées</h2>
+
+    <h3>6. ⚡ Polars : Le successeur ultra-rapide de Pandas</h3>
+
+    <div class="library-card">
+        <div class="library-header">
+            <div class="library-title">
+                <div class="library-logo">⚡</div>
+                <h4 class="library-name">Polars</h4>
+            </div>
+            <div class="library-badges">
+                <span class="badge badge-difficulty">Moyen</span>
+                <span class="badge badge-popularity">★★★★☆ Émergente</span>
+                <span class="badge badge-performance">Performance : Exceptionnelle</span>
+            </div>
+        </div>
+        
+        <p class="library-description">
+            <strong>Polars</strong> est une bibliothèque moderne écrite en Rust qui peut être 5-10x plus 
+            rapide que Pandas sur de gros datasets. Elle utilise le multithreading et lazy evaluation.
+        </p>
+        
+        <div class="library-features">
+            <div class="feature-item">5-10x plus rapide que Pandas</div>
+            <div class="feature-item">Lazy evaluation (optimisation auto)</div>
+            <div class="feature-item">Multithreading natif</div>
+            <div class="feature-item">API similaire à Pandas</div>
+            <div class="feature-item">Gestion efficace mémoire</div>
+            <div class="feature-item">Support Arrow/Parquet</div>
+        </div>
+    </div>
+
+    <div class="highlight-box">
+        <p>
+            <strong>🎯 Quand utiliser Polars ?</strong> Pour des datasets > 1 GB, des opérations complexes 
+            sur des millions de lignes, ou quand vous avez besoin de performances maximales. Pour des petits 
+            datasets ou du prototypage rapide, Pandas reste plus simple.
+        </p>
+    </div>
+
+    <h3>7. 📈 Statsmodels : Statistiques avancées</h3>
+
+    <div class="library-card">
+        <div class="library-header">
+            <div class="library-title">
+                <div class="library-logo">📈</div>
+                <h4 class="library-name">Statsmodels</h4>
+            </div>
+            <div class="library-badges">
+                <span class="badge badge-difficulty">Avancé</span>
+                <span class="badge badge-popularity">★★★★☆ Statisticiens</span>
+            </div>
+        </div>
+        
+        <p class="library-description">
+            Pour les analyses statistiques rigoureuses : tests d'hypothèses, régression OLS, séries temporelles 
+            (ARIMA), modèles GLM, et bien plus. Équivalent de R en Python.
+        </p>
+    </div>
+
+    <h2>Workflow complet d'analyse de données</h2>
+
+    <div class="workflow-diagram">
+        <h3 style="text-align: center; margin-bottom: 30px;">Pipeline standard d'analyse</h3>
+        
+        <div class="workflow-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <div class="step-title">Collecte et Import des données
+                    <span class="step-library">Pandas</span>
+                </div>
+                <div class="step-description">
+                    Charger les données depuis CSV, Excel, SQL, API ou web scraping
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <div class="step-title">Nettoyage et Préparation
+                    <span class="step-library">Pandas + NumPy</span>
+                </div>
+                <div class="step-description">
+                    Gérer les valeurs manquantes, outliers, doublons, normalisation
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <div class="step-title">Exploration et Analyse
+                    <span class="step-library">Pandas + Matplotlib/Seaborn</span>
+                </div>
+                <div class="step-description">
+                    Statistiques descriptives, corrélations, distributions, tendances
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <div class="step-title">Visualisation Interactive
+                    <span class="step-library">Plotly</span>
+                </div>
+                <div class="step-description">
+                    Créer dashboards et graphiques interactifs pour stakeholders
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <div class="step-title">Modélisation (optionnel)
+                    <span class="step-library">Scikit-learn</span>
+                </div>
+                <div class="step-description">
+                    Machine learning pour prédictions, clustering, classification
+                </div>
+            </div>
+        </div>
+        
+        <div class="workflow-step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+                <div class="step-title">Rapport et Insights
+                    <span class="step-library">Jupyter + Export</span>
+                </div>
+                <div class="step-description">
+                    Documenter, exporter résultats (PDF, HTML, Excel) et recommandations
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Cas d'usage concrets par industrie</h2>
+
+    <div class="use-case-grid">
+        <div class="use-case-card">
+            <div class="use-case-icon">🛒</div>
+            <h4 class="use-case-title">E-commerce</h4>
+            <p class="use-case-description">
+                Analyse panier moyen, taux de conversion, recommandations produits, prédiction churn
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">Pandas</span>
+                <span class="tool-tag">Scikit-learn</span>
+                <span class="tool-tag">Plotly</span>
+            </div>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">💰</div>
+            <h4 class="use-case-title">Finance</h4>
+            <p class="use-case-description">
+                Analyse risque crédit, détection fraude, prévisions boursières, portfolio optimization
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">NumPy</span>
+                <span class="tool-tag">Statsmodels</span>
+                <span class="tool-tag">Pandas</span>
+            </div>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">🏥</div>
+            <h4 class="use-case-title">Santé</h4>
+            <p class="use-case-description">
+                Analyse épidémiologique, prédiction maladies, optimisation plannings, études cliniques
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">Pandas</span>
+                <span class="tool-tag">Scikit-learn</span>
+                <span class="tool-tag">Seaborn</span>
+            </div>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">📱</div>
+            <h4 class="use-case-title">Marketing Digital</h4>
+            <p class="use-case-description">
+                ROI campagnes, segmentation clients, A/B testing, attribution multi-touch
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">Pandas</span>
+                <span class="tool-tag">Matplotlib</span>
+                <span class="tool-tag">Statsmodels</span>
+            </div>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">🏭</div>
+            <h4 class="use-case-title">Industrie</h4>
+            <p class="use-case-description">
+                Maintenance prédictive, optimisation production, contrôle qualité, supply chain
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">NumPy</span>
+                <span class="tool-tag">Scikit-learn</span>
+                <span class="tool-tag">Plotly</span>
+            </div>
+        </div>
+        
+        <div class="use-case-card">
+            <div class="use-case-icon">📊</div>
+            <h4 class="use-case-title">Business Intelligence</h4>
+            <p class="use-case-description">
+                Dashboards exécutifs, KPI tracking, analyse performance, rapports automatisés
+            </p>
+            <div class="use-case-tools">
+                <span class="tool-tag">Pandas</span>
+                <span class="tool-tag">Plotly</span>
+                <span class="tool-tag">Dash</span>
+            </div>
+        </div>
+    </div>
+
+    <h2>Tableau comparatif : Quelle bibliothèque pour quel besoin ?</h2>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Bibliothèque</th>
+                <th>Meilleur pour</th>
+                <th>Courbe d'apprentissage</th>
+                <th>Performance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Pandas</strong></td>
+                <td>Manipulation données structurées, EDA</td>
+                <td>★★☆☆☆ Facile</td>
+                <td>★★★☆☆ Bonne</td>
+            </tr>
+            <tr>
+                <td><strong>NumPy</strong></td>
+                <td>Calculs numériques, algèbre linéaire</td>
+                <td>★★★☆☆ Moyen</td>
+                <td>★★★★★ Excellente</td>
+            </tr>
+            <tr>
+                <td><strong>Matplotlib</strong></td>
+                <td>Visualisations statiques, publications</td>
+                <td>★★★☆☆ Moyen</td>
+                <td>★★★★☆ Très bonne</td>
+            </tr>
+            <tr>
+                <td><strong>Seaborn</strong></td>
+                <td>Viz statistiques élégantes</td>
+                <td>★★☆☆☆ Facile</td>
+                <td>★★★★☆ Très bonne</td>
+            </tr>
+            <tr>
+                <td><strong>Plotly</strong></td>
+                <td>Dashboards interactifs, web</td>
+                <td>★★☆☆☆ Facile</td>
+                <td>★★★★☆ Très bonne</td>
+            </tr>
+            <tr>
+                <td><strong>Scikit-learn</strong></td>
+                <td>Machine learning classique</td>
+                <td>★★★★☆ Avancé</td>
+                <td>★★★★☆ Très bonne</td>
+            </tr>
+            <tr>
+                <td><strong>Polars</strong></td>
+                <td>Gros datasets, performance max</td>
+                <td>★★★☆☆ Moyen</td>
+                <td>★★★★★ Exceptionnelle</td>
+            </tr>
+            <tr>
+                <td><strong>Statsmodels</strong></td>
+                <td>Statistiques rigoureuses, tests</td>
+                <td>★★★★☆ Avancé</td>
+                <td>★★★☆☆ Bonne</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Conseils pour débuter efficacement</h2>
+
+    <h3>📚 Parcours d'apprentissage recommandé</h3>
+
+    <ol>
+        <li><strong>Semaine 1-2 : Python de base</strong> - Maîtrisez les fondamentaux du langage</li>
+        <li><strong>Semaine 3-4 : NumPy</strong> - Comprenez les arrays et opérations vectorisées</li>
+        <li><strong>Semaine 5-8 : Pandas</strong> - Le cœur de l'analyse de données</li>
+        <li><strong>Semaine 9-10 : Matplotlib/Seaborn</strong> - Visualisation des insights</li>
+        <li><strong>Semaine 11-12 : Projets pratiques</strong> - Analyser vos propres datasets</li>
+        <li><strong>Mois 4+ : Scikit-learn</strong> - Si vous voulez faire du ML</li>
+    </ol>
+
+    <div class="highlight-box">
+        <p>
+            <strong>💡 Conseil Dev225 :</strong> Ne cherchez pas à tout apprendre. Maîtrisez d'abord 
+            Pandas + NumPy + Matplotlib. Ces trois bibliothèques couvrent 80% des besoins quotidiens. 
+            Le reste viendra naturellement selon vos projets.
+        </p>
+    </div>
+
+    <h3>🛠️ Configuration de l'environnement</h3>
+
+    <div class="code-example">
+        <div class="code-header">Installation complète (recommandé : Anaconda)</div>
+        <pre><code><span class="comment"># Option 1 : Via Anaconda (recommandé pour débutants)</span>
+            <span class="comment"># Télécharger depuis anaconda.com, tout est inclus !</span>
+<span class="comment"># Option 2 : Via pip</span>
+pip install pandas numpy matplotlib seaborn plotly scikit-learn jupyter
+<span class="comment"># Option 3 : Créer un environnement virtuel propre</span>
+python -m venv data_env
+source data_env/bin/activate  <span class="comment"># Linux/Mac</span>
+data_env\Scripts\activate     <span class="comment"># Windows</span>
+pip install pandas numpy matplotlib seaborn plotly scikit-learn
+<span class="comment"># Lancer Jupyter Notebook</span>
+jupyter notebook</code></pre>
+</div>
+<h2>Conclusion : Python, l'outil indispensable du data analyst moderne</h2>
+
+    <p>
+        Python et son écosystème de bibliothèques ont démocratisé l'analyse de données. Ce qui nécessitait 
+        des outils coûteux et complexes il y a 10 ans est maintenant accessible gratuitement à tous.
+    </p>
+
+    <div class="highlight-box">
+        <p>
+            <strong>🎓 Notre stack recommandée chez Dev225 :</strong>
+        </p>
+        <ul>
+            <li><strong>Base</strong> : Pandas + NumPy (indispensables)</li>
+            <li><strong>Visualisation</strong> : Seaborn (rapide) + Plotly (dashboards clients)</li>
+            <li><strong>ML</strong> : Scikit-learn (si besoin de prédictions)</li>
+            <li><strong>Performance</strong> : Polars (pour gros datasets uniquement)</li>
+            <li><strong>Présentation</strong> : Jupyter Notebooks (documentation interactive)</li>
+        </ul>
+        <p>
+            Avec cette stack, vous pouvez résoudre 95% des problèmes d'analyse de données en entreprise.
+        </p>
+    </div>
+
+    <div class="cta-box">
+        <h3>Besoin d'analyse de données pour votre entreprise ?</h3>
+        <p>
+            L'équipe Dev225 maîtrise parfaitement Python et toutes ces bibliothèques. Nous pouvons 
+            analyser vos données, créer des dashboards interactifs, construire des modèles prédictifs 
+            et former vos équipes.
+        </p>
+        <p>
+            <strong>Consultation gratuite</strong> pour identifier comment l'analyse de données peut 
+            améliorer votre business.
+        </p>
+        <a href="../index.html#contact" class="cta-button">Discutons de vos données →</a>
+    </div>
+
+    <a href="../index.html#blog" class="back-button">← Retour au blog</a>
+</article>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; <span id="current-year"></span> Dev225. Tous droits réservés. Agence digitale - Abidjan, Côte d'Ivoire</p>
+        </div>
+    </div>
+</footer>
+
+<script src="../script.js"></script>
+<script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
