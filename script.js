@@ -57,7 +57,7 @@ const projects = [
     {
         title: "site web Domtech",
         description: "DOMTECH propose des solutions innovantes en climatisation, réfrigération et énergie pour le confort et performance énergétique.",
-        image: " img/domtech site.png",
+        image: "img/domtech site.png",
         link: "#"
     },
 ];
@@ -185,15 +185,7 @@ function initActiveNavigation() {
     });
 }
 
-// Dans l'initialisation, ajoutez :
-document.addEventListener('DOMContentLoaded', function() {
-    displayProjects();
-    displayBlogPosts();
-    initMobileMenu();
-    setCurrentYear();
-    initSmoothScroll();
-    initActiveNavigation(); // <- AJOUTEZ CETTE LIGNE
-});
+// Cette initialisation est maintenant dans le bloc principal plus bas
 // ========================================
 // CARROUSEL BLOG AUTOMATIQUE
 // ========================================
@@ -396,25 +388,47 @@ function updateDots() {
 // NAVIGATION MOBILE
 // ========================================
 
+// ========================================
+// NAVIGATION MOBILE
+// ========================================
+
 function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-menu a');
     
-    if (!menuToggle || !navMenu) return;
+    if (!menuToggle || !navMenu) {
+        return;
+    }
     
-    // Toggle du menu
-    menuToggle.addEventListener('click', () => {
+    // Fonction pour toggle le menu
+    menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Toggle les classes
         navMenu.classList.toggle('active');
         menuToggle.classList.toggle('active');
     });
     
     // Fermer le menu lors du clic sur un lien
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', function() {
             navMenu.classList.remove('active');
             menuToggle.classList.remove('active');
         });
+    });
+    
+    // Fermer le menu si on clique en dehors (avec délai pour éviter conflit avec toggle)
+    document.addEventListener('click', function(e) {
+        setTimeout(function() {
+            if (navMenu.classList.contains('active')) {
+                if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+            }
+        }, 50);
     });
 }
 
@@ -497,23 +511,12 @@ function resetForm() {
         form.style.display = 'block';
         form.reset();
         
+        // Nettoyer l'URL
+        window.history.replaceState({}, document.title, window.location.pathname + '#contact');
+        
         // Scroll vers le formulaire
         form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-}
-// ========================================
-// renvoi du formulaire
-// ========================================
-function resetForm() {
-    const form = document.getElementById('contact-form');
-    const successMessage = document.getElementById('success-message');
-    
-    successMessage.style.display = 'none';
-    form.style.display = 'block';
-    form.reset();
-    
-    // Nettoyer l'URL
-    window.history.replaceState({}, document.title, window.location.pathname + '#contact');
 }
 // ========================================
 // FONCTIONS UTILITAIRES DE VALIDATION
@@ -594,6 +597,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Afficher les projets
     displayProjects();
     
+    // Afficher les articles de blog
+    displayBlogPosts();
+    
     // Initialiser le menu mobile
     initMobileMenu();
     
@@ -605,4 +611,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialiser le scroll smooth
     initSmoothScroll();
+    
+    // Initialiser la navigation active
+    initActiveNavigation();
 });
