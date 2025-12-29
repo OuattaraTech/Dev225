@@ -200,12 +200,21 @@
             <div class="services-grid">
                 <!-- SERVICE 1 : Développement Web -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <!-- Icône ou image à insérer ici -->
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                            <line x1="8" y1="21" x2="16" y2="21"></line>
-                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                    <div class="service-icon service-icon-web">
+                        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="webGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="2" y="4" width="20" height="14" rx="2" fill="url(#webGradient)" opacity="0.2"/>
+                            <rect x="2" y="4" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M2 8h20M7 4v4M17 4v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="7" cy="12" r="1" fill="currentColor"/>
+                            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+                            <circle cx="17" cy="12" r="1" fill="currentColor"/>
+                            <path d="M8 18h8M12 18v4M10 20h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </div>
                     <h3 class="service-title">Développement Web</h3>
@@ -216,11 +225,21 @@
 
                 <!-- SERVICE 2 : Développement d'Applications -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <!-- Icône ou image à insérer ici -->
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    <div class="service-icon service-icon-app">
+                        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="appGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <rect x="5" y="2" width="14" height="20" rx="3" fill="url(#appGradient)" opacity="0.2"/>
+                            <rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="7" r="1.5" fill="currentColor"/>
+                            <rect x="7" y="11" width="10" height="1.5" rx="0.75" fill="currentColor"/>
+                            <rect x="7" y="14" width="8" height="1.5" rx="0.75" fill="currentColor"/>
+                            <rect x="7" y="17" width="10" height="1.5" rx="0.75" fill="currentColor"/>
+                            <path d="M10 20h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </div>
                     <h3 class="service-title">Développement d'Applications</h3>
@@ -231,11 +250,19 @@
 
                 <!-- SERVICE 3 : Automatisation des Processus -->
                 <div class="service-card">
-                    <div class="service-icon">
-                        <!-- Icône ou image à insérer ici -->
-                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M12 1v6m0 6v6m5.2-14.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"></path>
+                    <div class="service-icon service-icon-auto">
+                        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="autoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="12" cy="12" r="8" fill="url(#autoGradient)" opacity="0.2" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                            <path d="M12 2v4M12 18v4M22 12h-4M6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M19.07 4.93l-2.83 2.83M7.76 16.24l-2.83 2.83M19.07 19.07l-2.83-2.83M7.76 7.76L4.93 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M8 8l8 8M16 8l-8 8" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
                         </svg>
                     </div>
                     <h3 class="service-title">Automatisation des Processus</h3>
@@ -255,8 +282,19 @@
                 <div class="title-underline"></div>
                 <p class="section-subtitle">Découvrez quelques-unes de nos réalisations</p>
             </div>
-            <!-- Les projets seront injectés ici dynamiquement via JavaScript -->
-            <div id="projects-container" class="projects-grid"></div>
+            <!-- Conteneur du carrousel -->
+            <div class="projects-carousel-wrapper">
+                <div id="projects-container" class="projects-grid"></div>
+            </div>
+            
+            <!-- Indicateurs de pagination -->
+            <div id="projects-carousel-dots" class="carousel-dots"></div>
+            
+            <!-- Boutons de navigation -->
+            <div class="carousel-controls">
+                <button id="projects-prev-btn" class="carousel-btn" aria-label="Précédent">‹</button>
+                <button id="projects-next-btn" class="carousel-btn" aria-label="Suivant">›</button>
+            </div>
         </div>
     </section>
 

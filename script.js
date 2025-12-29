@@ -63,21 +63,27 @@ const projects = [
 ];
 
 // ========================================
-// FONCTION D'AFFICHAGE DES PROJETS
+// FONCTION D'AFFICHAGE DES PROJETS EN CARROUSEL
 // ========================================
+
+let currentProjectSlide = 0;
+let projectsCarouselInterval;
 
 function displayProjects() {
     const container = document.getElementById('projects-container');
+    const dotsContainer = document.getElementById('projects-carousel-dots');
     
     if (!container) return;
     
-    // Vider le conteneur avant de le remplir
+    // Vider les conteneurs
     container.innerHTML = '';
+    if (dotsContainer) dotsContainer.innerHTML = '';
     
-    // Parcourir tous les projets et créer les cartes
-    projects.forEach(project => {
+    // Créer les cartes de projets
+    projects.forEach((project, index) => {
         const projectCard = document.createElement('div');
         projectCard.className = 'project-card';
+        projectCard.setAttribute('data-index', index);
         
         projectCard.innerHTML = `
             <img src="${project.image}" alt="${project.title}" class="project-image">
@@ -89,6 +95,161 @@ function displayProjects() {
         `;
         
         container.appendChild(projectCard);
+        
+        // Créer les points indicateurs
+        if (dotsContainer) {
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot';
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => scrollToProjectCard(index));
+            dotsContainer.appendChild(dot);
+        }
+    });
+    
+    // Initialiser le carrousel
+    initProjectsCarousel();
+}
+
+function initProjectsCarousel() {
+    const wrapper = document.querySelector('.projects-carousel-wrapper');
+    const container = document.getElementById('projects-container');
+    const prevBtn = document.getElementById('projects-prev-btn');
+    const nextBtn = document.getElementById('projects-next-btn');
+    
+    if (!wrapper || !container) return;
+    
+    // Démarrer le défilement automatique
+    startProjectsAutoplay();
+    
+    // Arrêter au survol
+    wrapper.addEventListener('mouseenter', stopProjectsAutoplay);
+    wrapper.addEventListener('mouseleave', startProjectsAutoplay);
+    
+    // Navigation par boutons
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            stopProjectsAutoplay();
+            previousProjectSlide();
+            startProjectsAutoplay();
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            stopProjectsAutoplay();
+            nextProjectSlide();
+            startProjectsAutoplay();
+        });
+    }
+    
+    // Détection du scroll pour mettre à jour les dots
+    let scrollTimeout;
+    wrapper.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            updateProjectsDotsFromScroll();
+        }, 100);
+    });
+    
+    // Navigation tactile améliorée (swipe)
+    let startX = 0;
+    let scrollLeft = 0;
+    
+    wrapper.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX;
+        scrollLeft = wrapper.scrollLeft;
+        stopProjectsAutoplay();
+    });
+    
+    wrapper.addEventListener('touchend', () => {
+        startProjectsAutoplay();
+    });
+}
+
+function scrollToProjectCard(index) {
+    const wrapper = document.querySelector('.projects-carousel-wrapper');
+    const cards = document.querySelectorAll('.project-card');
+    
+    if (!wrapper || !cards[index]) return;
+    
+    // Calculer la position de la carte
+    const card = cards[index];
+    const cardWidth = card.offsetWidth;
+    const gap = 35; // Gap entre les cartes (doit correspondre au CSS)
+    const wrapperWidth = wrapper.offsetWidth;
+    
+    // Centrer la carte dans le wrapper
+    const scrollPosition = (cardWidth + gap) * index - (wrapperWidth / 2) + (cardWidth / 2);
+    
+    wrapper.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+    });
+    
+    currentProjectSlide = index;
+    updateProjectsDots();
+}
+
+function updateProjectsDotsFromScroll() {
+    const wrapper = document.querySelector('.projects-carousel-wrapper');
+    const cards = document.querySelectorAll('.project-card');
+    
+    if (!wrapper || cards.length === 0) return;
+    
+    const scrollPosition = wrapper.scrollLeft;
+    const cardWidth = cards[0].offsetWidth + 35; // largeur + gap
+    
+    // Déterminer quelle carte est la plus proche du centre
+    const centerPosition = scrollPosition + wrapper.offsetWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+    
+    cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(centerPosition - cardCenter);
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = index;
+        }
+    });
+    
+    currentProjectSlide = closestIndex;
+    updateProjectsDots();
+}
+
+function startProjectsAutoplay() {
+    stopProjectsAutoplay(); // Éviter les doublons
+    projectsCarouselInterval = setInterval(() => {
+        nextProjectSlide();
+    }, 4000); // Change toutes les 4 secondes
+}
+
+function stopProjectsAutoplay() {
+    if (projectsCarouselInterval) {
+        clearInterval(projectsCarouselInterval);
+    }
+}
+
+function nextProjectSlide() {
+    currentProjectSlide = (currentProjectSlide + 1) % projects.length;
+    scrollToProjectCard(currentProjectSlide);
+}
+
+function previousProjectSlide() {
+    currentProjectSlide = (currentProjectSlide - 1 + projects.length) % projects.length;
+    scrollToProjectCard(currentProjectSlide);
+}
+
+function updateProjectsDots() {
+    const dots = document.querySelectorAll('#projects-carousel-dots .carousel-dot');
+    
+    dots.forEach((dot, index) => {
+        if (index === currentProjectSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
     });
 }
 
